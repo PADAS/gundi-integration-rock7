@@ -88,6 +88,10 @@ async def fetch_locations(
                 async for observation in get_device_data(
                     session, device, last_high_timestamp, datetime.now(timezone.utc)
                 ):
+                    # Skip observations that match the last sync timestamp (already sent)
+                    if observation.recorded_at <= last_high_timestamp:
+                        continue
+
                     yield observation
 
                     # Track the max timestamp for next sync
