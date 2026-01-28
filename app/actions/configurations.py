@@ -45,4 +45,4 @@ def get_auth_config(integration):
 
 
 class FetchLocationsConfig(PullActionConfiguration):
-    pass
+    subject_type: str = pydantic.Field("vehicle", title="Subject Type", description="Subject type for the observations.")

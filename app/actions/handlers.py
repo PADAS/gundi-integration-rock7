@@ -40,7 +40,7 @@ async def action_fetch_locations(integration: Integration, action_config: FetchL
     observations_batch: List[dict] = []
     total_sent = 0
 
-    async for observation in fetch_locations(integration, auth_config):
+    async for observation in fetch_locations(integration, auth_config, action_config.subject_type):
         # Use json.loads(observation.json()) for JSON-serializable dict (Pydantic v1)
         observations_batch.append(json.loads(observation.json()))
 
@@ -61,7 +61,8 @@ async def action_fetch_locations(integration: Integration, action_config: FetchL
 
 async def fetch_locations(
     integration: Integration,
-    auth_config: ServiceCredentialsConfig
+    auth_config: ServiceCredentialsConfig,
+    subject_type: str
 ) -> AsyncGenerator[Observation, None]:
     """
     Generator that yields Observation objects for all devices
@@ -91,6 +92,9 @@ async def fetch_locations(
                     # Skip observations that match the last sync timestamp (already sent)
                     if observation.recorded_at <= last_high_timestamp:
                         continue
+
+                    # Set the subject_type from config
+                    observation.subject_type = subject_type
 
                     yield observation
 
