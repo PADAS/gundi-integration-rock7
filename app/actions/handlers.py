@@ -40,7 +40,7 @@ async def action_fetch_locations(integration: Integration, action_config: FetchL
     observations_batch: List[dict] = []
     total_sent = 0
 
-    async for observation in fetch_locations(integration, auth_config, action_config.subject_type):
+    async for observation in fetch_locations(integration, auth_config, action_config.subject_type.lower()):
         # Use json.loads(observation.json()) for JSON-serializable dict (Pydantic v1)
         observations_batch.append(json.loads(observation.json()))
 
