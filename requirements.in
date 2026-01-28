@@ -1,1 +1,2 @@
 # Add your integration-specific dependencies here
+httpx<0.28  # Pin to version compatible with starlette 0.27.0
